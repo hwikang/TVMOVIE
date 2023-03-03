@@ -27,6 +27,8 @@
 		BFCD38EC29ADBF8E00FA9691 /* TVNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38EB29ADBF8E00FA9691 /* TVNetwork.swift */; };
 		BFCD38EE29ADC03400FA9691 /* MovieNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38ED29ADC03400FA9691 /* MovieNetwork.swift */; };
 		BFCD38F029ADC0E500FA9691 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38EF29ADC0E500FA9691 /* NetworkProvider.swift */; };
+		BFCD38F229B181E200FA9691 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38F129B181E200FA9691 /* ButtonView.swift */; };
+		BFCD38F429B1897F00FA9691 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38F329B1897F00FA9691 /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		BFCD38EB29ADBF8E00FA9691 /* TVNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVNetwork.swift; sourceTree = "<group>"; };
 		BFCD38ED29ADC03400FA9691 /* MovieNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieNetwork.swift; sourceTree = "<group>"; };
 		BFCD38EF29ADC0E500FA9691 /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
+		BFCD38F129B181E200FA9691 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		BFCD38F329B1897F00FA9691 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +127,8 @@
 				BFCD38A129AC403600FA9691 /* AppDelegate.swift */,
 				BFCD38A329AC403600FA9691 /* SceneDelegate.swift */,
 				BFCD38A529AC403600FA9691 /* ViewController.swift */,
+				BFCD38F329B1897F00FA9691 /* ViewModel.swift */,
+				BFCD38F129B181E200FA9691 /* ButtonView.swift */,
 				BFCD38DF29AC509000FA9691 /* Network */,
 				BFCD38A729AC403600FA9691 /* Main.storyboard */,
 				BFCD38AA29AC403F00FA9691 /* Assets.xcassets */,
@@ -309,9 +315,11 @@
 			files = (
 				BFCD38E829ADBADC00FA9691 /* MovieResult.swift in Sources */,
 				BFCD38A629AC403600FA9691 /* ViewController.swift in Sources */,
+				BFCD38F229B181E200FA9691 /* ButtonView.swift in Sources */,
 				BFCD38EA29ADBDB700FA9691 /* Network.swift in Sources */,
 				BFCD38EC29ADBF8E00FA9691 /* TVNetwork.swift in Sources */,
 				BFCD38E129AC50AC00FA9691 /* Const.swift in Sources */,
+				BFCD38F429B1897F00FA9691 /* ViewModel.swift in Sources */,
 				BFCD38EE29ADC03400FA9691 /* MovieNetwork.swift in Sources */,
 				BFCD38E629ADB9A400FA9691 /* Movie.swift in Sources */,
 				BFCD38F029ADC0E500FA9691 /* NetworkProvider.swift in Sources */,
