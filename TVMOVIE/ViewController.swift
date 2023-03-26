@@ -9,12 +9,24 @@ import UIKit
 import SnapKit
 import RxSwift
 
+//레이아웃
+enum Section: Hashable {
+    case double
+}
+//셀
+enum Item: Hashable {
+    case normal(TV)
+}
+
 class ViewController: UIViewController {
     let disposeBag = DisposeBag()
     let buttonView = ButtonView()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        collectionView.register(NormalCollectionViewCell.self, forCellWithReuseIdentifier: NormalCollectionViewCell.id)
+        return collectionView
+    }()
     let viewModel = ViewModel()
-    // Subject - 이벤트를 발생 시키면서 Observable 형태도 되는거
     let tvTrigger = PublishSubject<Void>()
     let movieTrigger = PublishSubject<Void>()
     override func viewDidLoad() {
@@ -66,6 +78,5 @@ class ViewController: UIViewController {
         
     }
     
-
-
+   
 }

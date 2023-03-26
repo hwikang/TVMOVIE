@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFBB1BE929D026C700349C18 /* NormalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB1BE829D026C700349C18 /* NormalCollectionViewCell.swift */; };
 		BFCD38A229AC403600FA9691 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38A129AC403600FA9691 /* AppDelegate.swift */; };
 		BFCD38A429AC403600FA9691 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38A329AC403600FA9691 /* SceneDelegate.swift */; };
 		BFCD38A629AC403600FA9691 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38A529AC403600FA9691 /* ViewController.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BFBB1BE829D026C700349C18 /* NormalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalCollectionViewCell.swift; sourceTree = "<group>"; };
 		BFCD389E29AC403600FA9691 /* TVMOVIE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TVMOVIE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCD38A129AC403600FA9691 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFCD38A329AC403600FA9691 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BFBB1BE729D026B600349C18 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BFBB1BE829D026C700349C18 /* NormalCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		BFCD389529AC403600FA9691 = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 				BFCD38A129AC403600FA9691 /* AppDelegate.swift */,
 				BFCD38A329AC403600FA9691 /* SceneDelegate.swift */,
 				BFCD38A529AC403600FA9691 /* ViewController.swift */,
+				BFBB1BE729D026B600349C18 /* Cells */,
 				BFCD38F329B1897F00FA9691 /* ViewModel.swift */,
 				BFCD38F129B181E200FA9691 /* ButtonView.swift */,
 				BFCD38DF29AC509000FA9691 /* Network */,
@@ -316,6 +327,7 @@
 				BFCD38E829ADBADC00FA9691 /* MovieResult.swift in Sources */,
 				BFCD38A629AC403600FA9691 /* ViewController.swift in Sources */,
 				BFCD38F229B181E200FA9691 /* ButtonView.swift in Sources */,
+				BFBB1BE929D026C700349C18 /* NormalCollectionViewCell.swift in Sources */,
 				BFCD38EA29ADBDB700FA9691 /* Network.swift in Sources */,
 				BFCD38EC29ADBF8E00FA9691 /* TVNetwork.swift in Sources */,
 				BFCD38E129AC50AC00FA9691 /* Const.swift in Sources */,

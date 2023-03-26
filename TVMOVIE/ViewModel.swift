@@ -31,17 +31,9 @@ class ViewModel {
     }
     
     func transform(input: Input) -> Output {
-        
-        //trigger -> 네트워크 -> Observable<T> -> VC 전달 -> VC에서 구독
-        
-        
-//        tvTrigger -> Observable<Void> -> Observable<[TV]>
-        
         let tvList = input.tvTrigger.flatMapLatest {[unowned self] _ -> Observable<[TV]> in
-//            Observable<TVListModel> -> Observable<[TV]>
             return self.tvNetwork.getTopRatedList().map{ $0.results }
         }
-        
         
         let movieResult = input.movieTrigger.flatMapLatest { [unowned self] _ -> Observable<MovieResult> in
             //combineLatest
