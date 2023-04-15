@@ -91,9 +91,15 @@ class ViewController: UIViewController {
             let normalList = movieResult.popular.results.map { movie in
                 return Item.normal(Content(movie: movie))
             }
+          
             snapshot.appendSections([horizontalSection])
             snapshot.appendItems(normalList, toSection: horizontalSection)
-           
+            let verticalSection = Section.vertical("Upcoming Movies")
+            let itemList = movieResult.upcoming.results.map { movie in
+                return Item.list(movie)
+            }
+            snapshot.appendSections([verticalSection])
+            snapshot.appendItems(itemList, toSection: verticalSection)
             self?.dataSource?.apply(snapshot)
         }.disposed(by: disposeBag)
     }
@@ -121,11 +127,27 @@ class ViewController: UIViewController {
                 return self?.createBannerSection()
             case .horizontal:
                 return self?.createHorizontalSection()
+            case .vertical:
+                return self?.createVerticalSection()
             default:
                 return self?.createDoubleSection()
             }
             
         }, configuration: config)
+    }
+    private func createVerticalSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0)
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(320))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 3)
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
+        section.boundarySupplementaryItems = [header]
+        return section
     }
     
     private func createHorizontalSection() -> NSCollectionLayoutSection {
@@ -174,8 +196,8 @@ class ViewController: UIViewController {
                 cell?.configure(title: movieData.title, overview: movieData.overview, review: movieData.vote, url: movieData.posterURL)
                 return cell
             case .list(let movieData):
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BigImageCollectionViewCell.id, for: indexPath) as? BigImageCollectionViewCell
-                cell?.configure(title: movieData.title, overview: movieData.overview, review: movieData.vote, url: movieData.posterURL)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCollectionViewCell.id, for: indexPath) as? ListCollectionViewCell
+                cell?.configure(title: movieData.title, releaseDate: movieData.releaseDate, url: movieData.posterURL)
                 return cell
             }
         })
@@ -185,7 +207,7 @@ class ViewController: UIViewController {
             let section = self?.dataSource?.sectionIdentifier(for: indexPath.section)
             
             switch section {
-            case .horizontal(let title):
+            case .horizontal(let title), .vertical(let title):
                 (header as? HeaderView)?.configure(title: title)
                
             default:
