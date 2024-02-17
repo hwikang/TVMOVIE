@@ -77,30 +77,41 @@ class ViewController: UIViewController {
             self?.dataSource?.apply(snapshot)
         }.disposed(by: disposeBag)
         
-        output.movieResult.bind {[weak self] movieResult in
-            print("Movie Result \(movieResult)")
-            var snapshot = NSDiffableDataSourceSnapshot<Section,Item>()
-            let bigImageList = movieResult.nowPlaying.results.map { movie in
-                return Item.bigImage(movie)
+        output.movieResult
+            .observe(on: MainScheduler.instance)
+            .bind {[weak self] movieResult in
+//            print("Movie Result \(movieResult)")
+            switch movieResult {
+            case .success(let movieResult):
+                var snapshot = NSDiffableDataSourceSnapshot<Section,Item>()
+                let bigImageList = movieResult.nowPlaying.results.map { movie in
+                    return Item.bigImage(movie)
+                }
+                let bannerSection = Section.banner
+                snapshot.appendSections([bannerSection])
+                snapshot.appendItems(bigImageList, toSection: bannerSection)
+
+                let horizontalSection = Section.horizontal("Popular Movies")
+                let normalList = movieResult.popular.results.map { movie in
+                    return Item.normal(Content(movie: movie))
+                }
+
+                snapshot.appendSections([horizontalSection])
+                snapshot.appendItems(normalList, toSection: horizontalSection)
+                let verticalSection = Section.vertical("Upcoming Movies")
+                let itemList = movieResult.upcoming.results.map { movie in
+                    return Item.list(movie)
+                }
+                snapshot.appendSections([verticalSection])
+                snapshot.appendItems(itemList, toSection: verticalSection)
+                self?.dataSource?.apply(snapshot)
+
+            case .failure(let error):
+                let alert = UIAlertController(title: "에러", message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(.init(title: "확인", style: .default))
+                self?.present(alert, animated: true, completion: nil)
+
             }
-            let bannerSection = Section.banner
-            snapshot.appendSections([bannerSection])
-            snapshot.appendItems(bigImageList, toSection: bannerSection)
-            
-            let horizontalSection = Section.horizontal("Popular Movies")
-            let normalList = movieResult.popular.results.map { movie in
-                return Item.normal(Content(movie: movie))
-            }
-          
-            snapshot.appendSections([horizontalSection])
-            snapshot.appendItems(normalList, toSection: horizontalSection)
-            let verticalSection = Section.vertical("Upcoming Movies")
-            let itemList = movieResult.upcoming.results.map { movie in
-                return Item.list(movie)
-            }
-            snapshot.appendSections([verticalSection])
-            snapshot.appendItems(itemList, toSection: verticalSection)
-            self?.dataSource?.apply(snapshot)
         }.disposed(by: disposeBag)
     }
     

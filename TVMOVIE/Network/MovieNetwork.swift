@@ -15,6 +15,7 @@ final class MovieNetwork {
     }
     
     func getNowPlayingList() -> Observable<MovieListModel> {
+
         return network.getItemList(path: "/movie/now_playing")
     }
     func getPoplarList() -> Observable<MovieListModel> {
