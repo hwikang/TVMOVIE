@@ -34,6 +34,7 @@
 		BFCD38F029ADC0E500FA9691 /* NetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38EF29ADC0E500FA9691 /* NetworkProvider.swift */; };
 		BFCD38F229B181E200FA9691 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38F129B181E200FA9691 /* ButtonView.swift */; };
 		BFCD38F429B1897F00FA9691 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCD38F329B1897F00FA9691 /* ViewModel.swift */; };
+		F8FA64892B807ED000066E6D /* ReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FA64882B807ED000066E6D /* ReviewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		BFCD38EF29ADC0E500FA9691 /* NetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProvider.swift; sourceTree = "<group>"; };
 		BFCD38F129B181E200FA9691 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		BFCD38F329B1897F00FA9691 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		F8FA64882B807ED000066E6D /* ReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				BFCD38A129AC403600FA9691 /* AppDelegate.swift */,
 				BFCD38A329AC403600FA9691 /* SceneDelegate.swift */,
 				BFCD38A529AC403600FA9691 /* ViewController.swift */,
+				F8FA64882B807ED000066E6D /* ReviewViewController.swift */,
 				BFBB1BE729D026B600349C18 /* Cells */,
 				BFCD38F329B1897F00FA9691 /* ViewModel.swift */,
 				BFCD38F129B181E200FA9691 /* ButtonView.swift */,
@@ -338,6 +341,7 @@
 			files = (
 				BFCD38E829ADBADC00FA9691 /* MovieResult.swift in Sources */,
 				BFBB1BF129DB12B000349C18 /* HeaderView.swift in Sources */,
+				F8FA64892B807ED000066E6D /* ReviewViewController.swift in Sources */,
 				BFCD38A629AC403600FA9691 /* ViewController.swift in Sources */,
 				BFCD38F229B181E200FA9691 /* ButtonView.swift in Sources */,
 				BFBB1BE929D026C700349C18 /* NormalCollectionViewCell.swift in Sources */,

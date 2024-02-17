@@ -124,6 +124,23 @@ class ViewController: UIViewController {
             self?.movieTrigger.onNext(Void())
         }.disposed(by: disposeBag)
         
+        collectionView.rx.itemSelected.bind { [weak self] indexPath in
+            print(indexPath)
+            let item = self?.dataSource?.itemIdentifier(for: indexPath)
+            switch item {
+            case let .normal(content):
+                let vc = ReviewViewController(contentID: content.id)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            case let .list(movie), let .bigImage(movie):
+                let vc = ReviewViewController(contentID: movie.id)
+                self?.navigationController?.pushViewController(vc, animated: true)
+
+            case .none:
+                return
+                
+            
+            }
+        }.disposed(by: disposeBag)
     }
     
    
