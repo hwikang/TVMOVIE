@@ -17,11 +17,18 @@ final class NetworkProvider {
     
     func makeTVNetwork() -> TVNetwork {
         let network = Network<TVListModel>(endpoint)
+
         return TVNetwork(network: network)
     }
     
     func makeMovieNetwork() -> MovieNetwork {
         let network = Network<MovieListModel>(endpoint)
+
         return MovieNetwork(network: network)
+    }
+    
+    func makeReviewNetwork() -> ReviewNetwork {
+        let network = Network<ReviewListModel>(endpoint)
+        return ReviewNetwork(network: network)
     }
 }

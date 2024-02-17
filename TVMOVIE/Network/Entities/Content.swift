@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum ContentType: String, Decodable {
+    case tv
+    case movie
+}
 
 struct Content: Decodable, Hashable {
     let id: Int
@@ -15,7 +19,7 @@ struct Content: Decodable, Hashable {
     let posterURL: String
     let vote: String
     let releaseDate: String
-    
+    let type: ContentType
     init(tv: TV) {
         self.id = tv.id
         self.title = tv.name
@@ -23,6 +27,7 @@ struct Content: Decodable, Hashable {
         self.posterURL = tv.posterURL
         self.vote = tv.vote
         self.releaseDate = tv.firstAirDate
+        self.type = .tv
     }
     
     init(movie: Movie) {
@@ -32,6 +37,7 @@ struct Content: Decodable, Hashable {
         self.posterURL = movie.posterURL
         self.vote = movie.vote
         self.releaseDate = movie.releaseDate
+        self.type = .movie
     }
     
 }

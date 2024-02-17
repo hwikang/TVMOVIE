@@ -10,6 +10,7 @@ import RxSwift
 
 final class TVNetwork {
     private let network: Network<TVListModel>
+
     init(network : Network<TVListModel>){
         self.network = network
     }

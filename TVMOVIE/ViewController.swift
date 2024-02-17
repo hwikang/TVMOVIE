@@ -127,14 +127,17 @@ class ViewController: UIViewController {
         collectionView.rx.itemSelected.bind { [weak self] indexPath in
             print(indexPath)
             let item = self?.dataSource?.itemIdentifier(for: indexPath)
+            let nc = UINavigationController()
             switch item {
             case let .normal(content):
-                let vc = ReviewViewController(contentID: content.id)
-                self?.navigationController?.pushViewController(vc, animated: true)
+               
+                let vc = ReviewViewController(contentID: content.id, contentType: content.type)
+                nc.viewControllers = [vc]
+                self?.present(nc, animated: true)
             case let .list(movie), let .bigImage(movie):
-                let vc = ReviewViewController(contentID: movie.id)
-                self?.navigationController?.pushViewController(vc, animated: true)
-
+                let vc = ReviewViewController(contentID: movie.id, contentType: .movie)
+                nc.viewControllers = [vc]
+                self?.present(nc, animated: true)
             case .none:
                 return
                 
