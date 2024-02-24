@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF4867952B89D04B00C4BFC2 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4867942B89D04B00C4BFC2 /* ListVC.swift */; };
 		BFBB1BE929D026C700349C18 /* NormalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB1BE829D026C700349C18 /* NormalCollectionViewCell.swift */; };
 		BFBB1BEB29DB0A5000349C18 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB1BEA29DB0A5000349C18 /* Content.swift */; };
 		BFBB1BED29DB0CCD00349C18 /* BigImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB1BEC29DB0CCD00349C18 /* BigImageCollectionViewCell.swift */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BF4867942B89D04B00C4BFC2 /* ListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVC.swift; sourceTree = "<group>"; };
 		BFBB1BE829D026C700349C18 /* NormalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalCollectionViewCell.swift; sourceTree = "<group>"; };
 		BFBB1BEA29DB0A5000349C18 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		BFBB1BEC29DB0CCD00349C18 /* BigImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -148,8 +150,9 @@
 				BFCD38A129AC403600FA9691 /* AppDelegate.swift */,
 				BFCD38A329AC403600FA9691 /* SceneDelegate.swift */,
 				BFCD38A529AC403600FA9691 /* ViewController.swift */,
-				BFBB1BE729D026B600349C18 /* Cells */,
 				BFCD38F329B1897F00FA9691 /* ViewModel.swift */,
+				BF4867942B89D04B00C4BFC2 /* ListVC.swift */,
+				BFBB1BE729D026B600349C18 /* Cells */,
 				BFCD38F129B181E200FA9691 /* ButtonView.swift */,
 				BFCD38DF29AC509000FA9691 /* Network */,
 				BFCD38A729AC403600FA9691 /* Main.storyboard */,
@@ -346,6 +349,7 @@
 				BFCD38E129AC50AC00FA9691 /* Const.swift in Sources */,
 				BFCD38F429B1897F00FA9691 /* ViewModel.swift in Sources */,
 				BFBB1BEB29DB0A5000349C18 /* Content.swift in Sources */,
+				BF4867952B89D04B00C4BFC2 /* ListVC.swift in Sources */,
 				BFCD38EE29ADC03400FA9691 /* MovieNetwork.swift in Sources */,
 				BFCD38E629ADB9A400FA9691 /* Movie.swift in Sources */,
 				BFCD38F029ADC0E500FA9691 /* NetworkProvider.swift in Sources */,

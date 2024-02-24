@@ -10,10 +10,15 @@ import RxSwift
 
 
 class ViewModel {
+    enum ContentType {
+        case tv
+        case movie
+    }
     let disposeBag = DisposeBag()
     private let tvNetwork: TVNetwork
     private let movieNetwork: MovieNetwork
-    
+    public var currentContentType: ContentType = .tv
+    private var currentTVList: [TV] = []
     init() {
         let provider = NetworkProvider()
         movieNetwork = provider.makeMovieNetwork()
@@ -21,7 +26,7 @@ class ViewModel {
     }
     
     struct Input {
-        let tvTrigger: Observable<Void>
+        let tvTrigger: Observable<Int>
         let movieTrigger: Observable<Void>
     }
     
@@ -31,13 +36,19 @@ class ViewModel {
     }
     
     func transform(input: Input) -> Output {
-        let tvList = input.tvTrigger.flatMapLatest {[unowned self] _ -> Observable<[TV]> in
-            return self.tvNetwork.getTopRatedList().map{ $0.results }
+        let tvList = input.tvTrigger.flatMapLatest {[unowned self] page -> Observable<[TV]> in
+            currentContentType = .tv
+            
+            return self.tvNetwork.getTopRatedList(page: page)
+                .map{ $0.results }
+                .map { tvList in
+                    self.currentTVList += tvList
+                    return self.currentTVList
+                }
         }
         
         let movieResult = input.movieTrigger.flatMapLatest { [unowned self] _ -> Observable<MovieResult> in
-            //combineLatest
-            //Observable 1 ,2,  3 합쳐서 하나의 Observable로 바꾸고싶다면?
+            currentContentType = .movie
             return Observable.combineLatest(self.movieNetwork.getUpcomingList(), self.movieNetwork.getPoplarList(), self.movieNetwork.getNowPlayingList()) { upcoming, popular, nowPlaying -> MovieResult in
                  return MovieResult(upcoming: upcoming, popular: popular, nowPlaying: nowPlaying)
             }
