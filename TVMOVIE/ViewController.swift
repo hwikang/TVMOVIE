@@ -23,7 +23,6 @@ fileprivate enum Item: Hashable {
     case list(Movie)
 }
 
-
 class ViewController: UIViewController {
     let disposeBag = DisposeBag()
     private var dataSource: UICollectionViewDiffableDataSource<Section,Item>?
@@ -37,7 +36,7 @@ class ViewController: UIViewController {
         return collectionView
     }()
     let viewModel = ViewModel()
-    let tvTrigger = PublishSubject<Void>()
+    let tvTrigger = BehaviorSubject<Int>(value: 1)
     let movieTrigger = PublishSubject<Void>()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,29 +44,28 @@ class ViewController: UIViewController {
         setDatasource()
         bindViewModel()
         bindView()
-        tvTrigger.onNext(())
     }
-    
+
     private func setUI() {
         self.view.addSubview(buttonView)
         self.view.addSubview(collectionView)
-        
+
         buttonView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.height.equalTo(80)
         }
-        
+
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(buttonView.snp.bottom)
         }
     }
-    
+
     private func bindViewModel() {
         let input = ViewModel.Input(tvTrigger: tvTrigger.asObservable(), movieTrigger: movieTrigger.asObservable())
-        
+
         let output = viewModel.transform(input: input)
-        
+
         output.tvList.bind {[weak self] tvList in
             var snapshot = NSDiffableDataSourceSnapshot<Section,Item>()
             let items = tvList.map { Item.normal(Content(tv: $0))}
@@ -114,12 +112,12 @@ class ViewController: UIViewController {
             }
         }.disposed(by: disposeBag)
     }
-    
+
     private func bindView() {
         buttonView.tvButton.rx.tap.bind { [weak self] in
-            self?.tvTrigger.onNext(Void())
+            self?.tvTrigger.onNext(0)
         }.disposed(by: disposeBag)
-        
+
         buttonView.movieButton.rx.tap.bind { [weak self] in
             self?.movieTrigger.onNext(Void())
         }.disposed(by: disposeBag)
@@ -144,15 +142,33 @@ class ViewController: UIViewController {
             
             }
         }.disposed(by: disposeBag)
+
+        collectionView.rx
+            .prefetchItems
+            .filter { [weak self] _ in
+                self?.viewModel.currentContentType == .tv
+            }
+            .bind { [weak self] indexPath in
+                let snapshot = self?.dataSource?.snapshot()
+                guard let lastIndexPath = indexPath.last,
+                      let section = self?.dataSource?.sectionIdentifier(for: lastIndexPath.section),
+                      let numberOfItems = snapshot?.numberOfItems(inSection: section),
+                      let currentPage = try? self?.tvTrigger.value() else { return }
+
+                if lastIndexPath.row > numberOfItems - 2 {
+                    print("Fetch@")
+                    self?.tvTrigger.onNext(currentPage + 1)
+                }
+            }.disposed(by: disposeBag)
     }
-    
-   
+
+
     private func createLayout() -> UICollectionViewCompositionalLayout {
         let config = UICollectionViewCompositionalLayoutConfiguration()
         config.interSectionSpacing = 14
         return UICollectionViewCompositionalLayout(sectionProvider: {[weak self] sectionIndex, _ in
             let section = self?.dataSource?.sectionIdentifier(for: sectionIndex)
-            
+
             switch section {
             case .banner:
                 return self?.createBannerSection()
@@ -163,7 +179,7 @@ class ViewController: UIViewController {
             default:
                 return self?.createDoubleSection()
             }
-            
+
         }, configuration: config)
     }
     private func createVerticalSection() -> NSCollectionLayoutSection {
@@ -180,7 +196,7 @@ class ViewController: UIViewController {
         section.boundarySupplementaryItems = [header]
         return section
     }
-    
+
     private func createHorizontalSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -194,7 +210,7 @@ class ViewController: UIViewController {
         section.boundarySupplementaryItems = [header]
         return section
     }
-    
+
     private func createBannerSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -204,7 +220,7 @@ class ViewController: UIViewController {
         section.orthogonalScrollingBehavior = .groupPaging
         return section
     }
-    
+
     private func createDoubleSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -214,7 +230,7 @@ class ViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         return section
     }
-    
+
     private func setDatasource() {
         dataSource = UICollectionViewDiffableDataSource<Section,Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
             switch item {
@@ -232,19 +248,19 @@ class ViewController: UIViewController {
                 return cell
             }
         })
-        
+
         dataSource?.supplementaryViewProvider = {[weak self] collectionView, kind, indexPath -> UICollectionReusableView in
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderView.id, for: indexPath)
             let section = self?.dataSource?.sectionIdentifier(for: indexPath.section)
-            
+
             switch section {
             case .horizontal(let title), .vertical(let title):
                 (header as? HeaderView)?.configure(title: title)
-               
+
             default:
                 print("Default")
             }
-            
+
             return header
         }
     }

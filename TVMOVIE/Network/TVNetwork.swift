@@ -15,8 +15,8 @@ final class TVNetwork {
         self.network = network
     }
     
-    func getTopRatedList() -> Observable<TVListModel> {
-        return network.getItemList(path: "/tv/top_rated")
+    func getTopRatedList(page: Int) -> Observable<TVListModel> {
+        return network.getItemList(path: "/tv/top_rated", page: page)
     }
     
 }

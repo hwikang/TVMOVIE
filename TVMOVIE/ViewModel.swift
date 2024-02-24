@@ -10,10 +10,15 @@ import RxSwift
 
 
 class ViewModel {
+    enum ContentType {
+        case tv
+        case movie
+    }
     let disposeBag = DisposeBag()
     private let tvNetwork: TVNetwork
     private let movieNetwork: MovieNetwork
-    
+    public var currentContentType: ContentType = .tv
+    private var currentTVList: [TV] = []
     init() {
         let provider = NetworkProvider()
         movieNetwork = provider.makeMovieNetwork()
@@ -21,7 +26,7 @@ class ViewModel {
     }
     
     struct Input {
-        let tvTrigger: Observable<Void>
+        let tvTrigger: Observable<Int>
         let movieTrigger: Observable<Void>
     }
     
@@ -31,12 +36,19 @@ class ViewModel {
     }
     
     func transform(input: Input) -> Output {
-        let tvList = input.tvTrigger.flatMapLatest {[unowned self] _ -> Observable<[TV]> in
-            return self.tvNetwork.getTopRatedList().map{ $0.results }
+        let tvList = input.tvTrigger.flatMapLatest {[unowned self] page -> Observable<[TV]> in
+            currentContentType = .tv
+            
+            return self.tvNetwork.getTopRatedList(page: page)
+                .map{ $0.results }
+                .map { tvList in
+                    self.currentTVList += tvList
+                    return self.currentTVList
+                }
         }
         
         let movieResult = input.movieTrigger.flatMapLatest { [unowned self] _ -> Observable<Result<MovieResult, Error>> in
-
+            currentContentType = .movie
             return Observable.combineLatest(self.movieNetwork.getUpcomingList(), self.movieNetwork.getPoplarList(), self.movieNetwork.getNowPlayingList()) { upcoming, popular, nowPlaying -> Result<MovieResult, Error> in
                 return .success(MovieResult(upcoming: upcoming, popular: popular, nowPlaying: nowPlaying))
             }.catch { error in
