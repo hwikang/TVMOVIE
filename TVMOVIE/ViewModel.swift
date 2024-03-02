@@ -38,7 +38,7 @@ class ViewModel {
     func transform(input: Input) -> Output {
         let tvList = input.tvTrigger.flatMapLatest {[unowned self] page -> Observable<[TV]> in
             currentContentType = .tv
-            
+            if page == 1 { currentTVList = [] }
             return self.tvNetwork.getTopRatedList(page: page)
                 .map{ $0.results }
                 .map { tvList in
