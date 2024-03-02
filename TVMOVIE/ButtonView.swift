@@ -39,8 +39,7 @@ class ButtonView: UIView {
         self.addSubview(movieButton)
         
         tvButton.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(20)
+            make.centerY.leading.equalToSuperview()
         }
         
         movieButton.snp.makeConstraints { make in

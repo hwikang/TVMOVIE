@@ -35,6 +35,25 @@ class ViewController: UIViewController {
         collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.id)
         return collectionView
     }()
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    private let textfield: UITextField = {
+        let textfield = UITextField()
+        textfield.layer.borderWidth = 1
+        textfield.layer.borderColor = UIColor.gray.cgColor
+        textfield.layer.cornerRadius = 5
+        let imageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
+        imageView.tintColor = .black
+        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        textfield.leftView = imageView
+        textfield.leftViewMode = .always
+
+        return textfield
+    }()
     let viewModel = ViewModel()
     let tvTrigger = BehaviorSubject<Int>(value: 1)
     let movieTrigger = PublishSubject<Void>()
@@ -47,17 +66,27 @@ class ViewController: UIViewController {
     }
 
     private func setUI() {
-        self.view.addSubview(buttonView)
+        self.view.addSubview(stackView)
+        stackView.addArrangedSubview(textfield)
+        stackView.addArrangedSubview(buttonView)
         self.view.addSubview(collectionView)
-
+        stackView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(14)
+            
+        }
+        textfield.snp.makeConstraints { make in
+//            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(14)
+            make.height.equalTo(44)
+        }
         buttonView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+//            make.top.equalTo(textfield.snp.bottom)
+//            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.height.equalTo(80)
         }
 
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(buttonView.snp.bottom)
+            make.top.equalTo(stackView.snp.bottom)
         }
     }
 
@@ -78,7 +107,6 @@ class ViewController: UIViewController {
         output.movieResult
             .observe(on: MainScheduler.instance)
             .bind {[weak self] movieResult in
-//            print("Movie Result \(movieResult)")
             switch movieResult {
             case .success(let movieResult):
                 var snapshot = NSDiffableDataSourceSnapshot<Section,Item>()
@@ -116,10 +144,13 @@ class ViewController: UIViewController {
     private func bindView() {
         buttonView.tvButton.rx.tap.bind { [weak self] in
             self?.tvTrigger.onNext(1)
+            self?.textfield.isHidden = false
         }.disposed(by: disposeBag)
 
         buttonView.movieButton.rx.tap.bind { [weak self] in
             self?.movieTrigger.onNext(Void())
+            self?.textfield.isHidden = true
+
         }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.bind { [weak self] indexPath in
