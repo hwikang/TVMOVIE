@@ -19,4 +19,9 @@ final class TVNetwork {
         return network.getItemList(path: "/tv/top_rated", page: page)
     }
     
+    func getQueriedList(page: Int, query: String) -> Observable<TVListModel> {
+        return network.getItemList(path: "/search/tv", page: page, query: query)
+    }
+    
+    
 }

@@ -28,6 +28,7 @@ class ViewModel {
     struct Input {
         let tvTrigger: Observable<Int>
         let movieTrigger: Observable<Void>
+        let search: Observable<String>
     }
     
     struct Output {
@@ -36,16 +37,22 @@ class ViewModel {
     }
     
     func transform(input: Input) -> Output {
-        let tvList = input.tvTrigger.flatMapLatest {[unowned self] page -> Observable<[TV]> in
-            currentContentType = .tv
-            if page == 1 { currentTVList = [] }
-            return self.tvNetwork.getTopRatedList(page: page)
-                .map{ $0.results }
-                .map { tvList in
-                    self.currentTVList += tvList
-                    return self.currentTVList
+        
+        let tvList = Observable.combineLatest(input.search, input.tvTrigger).asObservable()
+            .flatMapLatest { [unowned self] searchKeyword, page in
+                currentContentType = .tv
+                if page == 1 { currentTVList = [] }
+                if searchKeyword.isEmpty {
+                    return self.tvNetwork.getTopRatedList(page: page)
+                } else {
+                    return self.tvNetwork.getQueriedList(page: page, query: searchKeyword)
                 }
-        }
+            }
+            .map{ $0.results }
+            .map { tvList in
+                self.currentTVList += tvList
+                return self.currentTVList
+            }
         
         let movieResult = input.movieTrigger.flatMapLatest { [unowned self] _ -> Observable<Result<MovieResult, Error>> in
             currentContentType = .movie

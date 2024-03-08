@@ -72,18 +72,13 @@ class ViewController: UIViewController {
         self.view.addSubview(collectionView)
         stackView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(14)
-            
         }
         textfield.snp.makeConstraints { make in
-//            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(14)
             make.height.equalTo(44)
         }
         buttonView.snp.makeConstraints { make in
-//            make.top.equalTo(textfield.snp.bottom)
-//            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.height.equalTo(80)
         }
-
         collectionView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(stackView.snp.bottom)
@@ -91,8 +86,15 @@ class ViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        let input = ViewModel.Input(tvTrigger: tvTrigger.asObservable(), movieTrigger: movieTrigger.asObservable())
-
+        let input = ViewModel.Input(
+            tvTrigger: tvTrigger.asObservable(),
+            movieTrigger: movieTrigger.asObservable(),
+            search: textfield.rx.text.orEmpty.distinctUntilChanged()
+                .debounce(.milliseconds(200), scheduler: MainScheduler.instance)
+                .map({ [weak self] in
+                    self?.tvTrigger.onNext(1)
+                    return $0}))
+        
         let output = viewModel.transform(input: input)
 
         output.tvList.bind {[weak self] tvList in

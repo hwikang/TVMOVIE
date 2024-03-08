@@ -17,10 +17,13 @@ class Network<T:Decodable> {
         self.endpoint = endpoint
         self.queue = ConcurrentDispatchQueueScheduler(qos: .background)
     }
-    func getItemList(path: String, isEnglish: Bool = false, page: Int? = nil) -> Observable<T> {
+    func getItemList(path: String, isEnglish: Bool = false, page: Int? = nil, query: String? = nil) -> Observable<T> {
         var fullPath = "\(endpoint)\(path)?api_key=\(APIKEY)&language=\(isEnglish ? "en" : "ko")"
         if let page = page {
             fullPath += "&page=\(page)"
+        }
+        if let query = query?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            fullPath += "&query=\(query)"
         }
         print(fullPath)
         return RxAlamofire.data(.get, fullPath)
